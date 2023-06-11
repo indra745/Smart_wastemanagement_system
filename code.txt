@@ -1,0 +1,109 @@
+const int trigPin = 6;
+const int echoPin = 5;
+const int trigPin1 = 3;
+const int echoPin1 = 2;
+
+const int trigPin2 = 10;
+const int echoPin2 = 11;
+
+const int sensor_pin = A1;
+
+long duration;
+int distanceCm;
+long duration1;
+int distanceCm1;
+
+long duration2;
+int distanceCm2;
+
+#include <Servo.h> 
+Servo Servo1; 
+int servoPin = 9;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(trigPin1, OUTPUT);
+  pinMode(echoPin1, INPUT);
+
+  pinMode(trigPin2, OUTPUT);
+  pinMode(echoPin2, INPUT);
+
+    Servo1.attach(servoPin); 
+}
+
+void loop() {
+  
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distanceCm = duration * 0.034 / 2;
+  int a=distanceCm;
+
+  digitalWrite(trigPin1, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin1, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin1, LOW);
+  duration1 = pulseIn(echoPin1, HIGH);
+  distanceCm1 = duration1 * 0.034 / 2;
+  int b=distanceCm;
+
+  digitalWrite(trigPin2, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin2, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin2, LOW);
+  duration2 = pulseIn(echoPin2, HIGH);
+  distanceCm2 = duration2 * 0.034 / 2;
+  int d=distanceCm2;
+
+  
+  int sensor;
+  sensor = analogRead(sensor_pin);
+  int c=sensor;
+  Serial.println(sensor);
+ 
+     Serial.println((distanceCm*100)/27);
+    Serial.println((distanceCm1*100)/26);
+     Serial.println(distanceCm2);
+    
+  delay(1000);
+//'''''''''''''''''''''''''''''''''''''''''
+if(d>8&&d<17){
+  
+  if(a<5&&b<5)
+  {
+    Servo1.write(130); 
+    delay(500);
+  }
+    else if(a>5&&b<5&&c<800)
+    {
+      Servo1.write(120); 
+    delay(5000);
+    Servo1.write(130); 
+    delay(500);
+  }
+   else if(a>5&&b>5&&c>800)
+    {
+      Servo1.write(60); 
+    delay(5000);
+    Servo1.write(130); 
+    delay(500);
+  }
+   else if(a>5&&b>5&&c<800)
+    {
+      Servo1.write(180); 
+    delay(5000);
+    Servo1.write(130); 
+    delay(500);
+  }
+  }
+else {
+Servo1.write(130);
+}  
+}
